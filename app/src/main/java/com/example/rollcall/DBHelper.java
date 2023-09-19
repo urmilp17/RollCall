@@ -136,7 +136,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
+    public void addDateColumnAndUpdateTable(String date, SQLiteDatabase db) {
+        // Check if the date column already exists
+        if (!isDateColumnExists(date, db)) {
+            String alterTableQuery = "ALTER TABLE " + TABLE_ATTENDANCE + " ADD COLUMN " + date + " TEXT DEFAULT 'absent'";
+            db.execSQL(alterTableQuery);
+        }
+    }
 
 
 

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rollcall.databinding.FragmentAddAttendanceListDialogItemBinding;
 import com.example.rollcall.databinding.FragmentAddAttendanceListDialogBinding;
@@ -33,11 +34,11 @@ public class AddAttendanceFragment extends BottomSheetDialogFragment {
 
     private Spinner spinnerMonth,spinnerNum;
     private EditText editTextRollNumbers;
-    private Button btnSubmit;
+    private Button btnSubmit,btnDate;
 
     // TODO: Customize parameter argument names
     private static final String ARG_ITEM_COUNT = "item_count";
-    private FragmentAddAttendanceListDialogBinding binding;
+
 
     // TODO: Customize parameters
     public static AddAttendanceFragment newInstance(int itemCount) {
@@ -51,26 +52,48 @@ public class AddAttendanceFragment extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_attendance_list_dialog, container, false);
+        View view = inflater.inflate(R.layout.add_attendance, container, false);
 
         spinnerNum = view.findViewById(R.id.spinnerDate);
         spinnerMonth = view.findViewById(R.id.spinnerMonth);
         editTextRollNumbers = view.findViewById(R.id.editTextRollNumbers);
         btnSubmit = view.findViewById(R.id.btnSubmit);
+        btnDate = view.findViewById(R.id.btnSubmit1);
+
+
+        btnDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle adding a new column for a date here
+                // Retrieve the date from spinnerDate and execute the task using DBHelper
+
+                String date = spinnerNum.getSelectedItem().toString();
+                String month = spinnerMonth.getSelectedItem().toString();
+                String indate = month + "_" + date;
+
+                DBHelper dbHelper = new DBHelper(getContext());
+                dbHelper.addDateColumnAndUpdateTable(indate, dbHelper.getWritableDatabase());
+
+                // Show a toast message indicating that the column was created
+                Toast.makeText(getContext(), "Column for " + indate + " created.", Toast.LENGTH_SHORT).show();
+
+                // Close the fragment
+                dismiss();
+            }
+        });
+
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Retrieve inputs
+                // Handle attendance submission here
+                // Retrieve inputs, validate, and execute the task using DBHelper
                 String date = spinnerNum.getSelectedItem().toString();
                 String month = spinnerMonth.getSelectedItem().toString();
                 String rollNumbers = editTextRollNumbers.getText().toString();
-                String indate = month+"_"+date;
-
-                // Convert the comma-separated roll numbers to an array
+                String indate = month + "_" + date;
                 String[] presentRollNumbers = rollNumbers.split(",");
 
-                // Validate and execute the task using a function from DBHelper
                 DBHelper dbHelper = new DBHelper(getContext());
                 dbHelper.addAttendanceWithDateAndRollNumbers(indate, presentRollNumbers);
 
@@ -78,6 +101,8 @@ public class AddAttendanceFragment extends BottomSheetDialogFragment {
                 dismiss();
             }
         });
+
+
 
         return view;
     }

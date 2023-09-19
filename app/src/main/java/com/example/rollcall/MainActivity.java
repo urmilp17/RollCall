@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         DBHelper dbHelper = new DBHelper(this);
         attendanceView = findViewById(R.id.recyclerView1);
         attendanceView.setLayoutManager(new LinearLayoutManager(this));
