@@ -129,9 +129,11 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(date, "present");
 
         for (String rollNumber : presentRollNumbers) {
-            String whereClause = "RollNo" + rollNumber + "=?";
-            db.update(TABLE_ATTENDANCE, values, whereClause, new String[]{"absent"});
+            String whereClause = "Roll_Numbers=?";
+            String[] whereArgs = {rollNumber};
+            db.update(TABLE_ATTENDANCE, values, whereClause, whereArgs);
         }
+
 
         db.close();
     }
