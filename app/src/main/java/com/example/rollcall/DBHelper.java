@@ -82,7 +82,6 @@ public class DBHelper extends SQLiteOpenHelper {
         List<AttendanceItem> itemList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Get the list of date columns dynamically from the table
         List<String> dateColumns = new ArrayList<>();
         Cursor cursor = db.rawQuery("PRAGMA table_info(" + TABLE_ATTENDANCE + ")", null);
         if (cursor != null) {
@@ -98,13 +97,10 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.close();
         }
 
-
-        // Calculate attendance percentage for each date column
         for (String dateColumn : dateColumns) {
             double presentPercentage = calculateAttendancePercentage(dateColumn);
             double absentPercentage = 100.0 - presentPercentage;
 
-            // Create a new AttendanceItem with date and percentages
             AttendanceItem item = new AttendanceItem(dateColumn, String.format("%.2f%%", presentPercentage), String.format("%.2f%%", absentPercentage));
 
             itemList.add(item);

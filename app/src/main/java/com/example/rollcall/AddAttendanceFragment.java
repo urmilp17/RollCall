@@ -22,14 +22,6 @@ import android.widget.Toast;
 import com.example.rollcall.databinding.FragmentAddAttendanceListDialogItemBinding;
 import com.example.rollcall.databinding.FragmentAddAttendanceListDialogBinding;
 
-/**
- *
- * <p>A fragment that shows a list of items as a modal bottom sheet.</p>
- * <p>You can show this modal bottom sheet from your activity like this:</p>
- * <pre>
- *     fragment_add_attendance.newInstance(30).show(getSupportFragmentManager(), "dialog");
- * </pre>
- */
 public class AddAttendanceFragment extends BottomSheetDialogFragment {
 
     private Spinner spinnerMonth,spinnerNum;
@@ -64,8 +56,6 @@ public class AddAttendanceFragment extends BottomSheetDialogFragment {
         btnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle adding a new column for a date here
-                // Retrieve the date from spinnerDate and execute the task using DBHelper
 
                 String date = spinnerNum.getSelectedItem().toString();
                 String month = spinnerMonth.getSelectedItem().toString();
